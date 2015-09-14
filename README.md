@@ -7,10 +7,11 @@ algorithm that assigns that probability.
 
 ### Step 1
 
-Scrape data from the [GitHub Archive](githubarchive.org).\n
+Scrape data from the [GitHub Archive](githubarchive.org).
+
 runExtractor.sh downloads the json that contains all the events for a given hour.
 extractor.py processes the json and records the relevant information in text.csv and events.csv.
-This process is very slow
+This process is very slow.
 
 ### Step 2
 
