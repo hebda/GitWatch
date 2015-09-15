@@ -15,12 +15,12 @@ type_dict = {
     'CreateEvent':5,
     'DeleteEvent':6,
     'MemberEvent':7,
-    'MembershipEvent':8,
+    'MembershipEvent':8, #does not exist
     'PublicEvent':9,
     'PullRequestEvent':10,
     'ReleaseEvent':11,
-    'StatusEvent':12,
-    'TeamAddEvent':13,
+    'StatusEvent':12, #does not exist
+    'TeamAddEvent':13, #does not exist
     'WatchEvent':14
 }
 
