@@ -1,6 +1,7 @@
 from flask import render_template, request
 from app import app
 import pymysql as mdb
+from a_Model import ModelIt
 
 db = mdb.connect(user="hebda", host="localhost", db="world", charset='utf8')
 
@@ -53,5 +54,8 @@ def cities_output():
   cities = []
   for result in query_results:
     cities.append(dict(name=result[0], country=result[1], population=result[2]))
-  the_result = ''
+
+  #call a function from a_Model package. note we are only pulling one result in the query
+  pop_input = cities[0]['population']
+  the_result = ModelIt(city, pop_input)
   return render_template("output.html", cities = cities, the_result = the_result)
