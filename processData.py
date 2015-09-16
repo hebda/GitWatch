@@ -6,7 +6,7 @@ import datetime as datetime
 from nltk.stem.porter import *
 
 
-stoptime=datetime.datetime.combine(datetime.date(2015,1,1),datetime.time(0,1,0))
+stoptime=datetime.datetime.combine(datetime.date(2015,4,1),datetime.time(0,0,0))
 stemmer = PorterStemmer()
 
 #get word features
@@ -57,6 +57,8 @@ for line in text:
     timestamp=datetime.datetime.strptime(vec[3], '%Y-%m-%dT%H:%M:%SZ')
     message=vec[4]
 
+    if timestamp.minute==0 and timestamp.second==0:
+        print timestamp
     if timestamp > stoptime:
         break
 
