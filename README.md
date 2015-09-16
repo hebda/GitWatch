@@ -21,3 +21,12 @@ Process the data and store in SQL
 
 Training
 
+### Step 4
+
+Populate training to db?
+think about how to deal with arbitrary inputs
+
+### Step 5
+
+Run the webapp
+* run.py will run the web app on the local machine
