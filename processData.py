@@ -170,7 +170,7 @@ for i in repo_features:
     outline='%d,' % i
     for j in repo_features[i]:
         outline+='%d,' % j
-    outline+='%d!\n' % class_dict[i]
+    outline+='%d\n' % class_dict[i]
     processed_csv.write(outline)
 
 processed_csv.close()
