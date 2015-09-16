@@ -4,10 +4,12 @@ import numpy as np
 import pandas as pd
 import datetime as datetime
 from nltk.stem.porter import *
+import random as rand
 
-
-stoptime=datetime.datetime.combine(datetime.date(2015,4,1),datetime.time(0,0,0))
+stoptime=datetime.datetime.combine(datetime.date(2015,2,1),datetime.time(0,0,0))
 stemmer = PorterStemmer()
+
+rand.seed(2468)
 
 #get word features
 word_features=[]
@@ -23,6 +25,12 @@ rfalc={} #repo features after last commit
 lc={} #last commit
 class_dict={} #class label
 num_ct_features=16
+
+#there is too much data. take 1k repos for now.
+num_accept=1000
+num_jan=999268 #num repos in january
+repo_accept=[]
+repo_reject=[]
 
 ## Summary of the 16 countable features:
 # name in json, id in extracted file, index herein
@@ -61,6 +69,15 @@ for line in text:
         print timestamp
     if timestamp > stoptime:
         break
+    if repoid in repo_reject:
+        continue
+    elif repoid not in repo_accept:
+        if rand.randint(1,num_jan)<=num_accept:
+            repo_accept.append(repoid)
+        else:
+            repo_reject.append(repoid)
+            continue
+
 
     event_vec=np.zeros(num_ct_features,int)
     event_vec[eventid]=1
