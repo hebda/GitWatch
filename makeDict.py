@@ -6,7 +6,7 @@ import operator
 
 text=open('text.csv','r')
 #run for 1 month
-stoptime=datetime.datetime.combine(datetime.date(2015,2,1),datetime.time(0,0,0)) 
+stoptime=datetime.datetime.combine(datetime.date(2015,1,15),datetime.time(0,0,0)) 
 
 features=dict()
 stemmer = PorterStemmer()
@@ -21,6 +21,8 @@ for line in text:
 
     if timestamp > stoptime:
         break
+    elif timestamp.second==0 and timestamp.minute==0 and timestamp.hour==0:
+        print timestamp
 
     words=''.join([i if ord(i)>=97 and ord(i)<122 else ' ' for i in message.replace('\n',' ').lower()]).split()
 
