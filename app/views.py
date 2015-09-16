@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, request
 from app import app
 import pymysql as mdb
 
@@ -22,3 +22,36 @@ def cities_page():
         cities += result[0]
         cities += "<br>"
     return cities
+
+@app.route("/db_fancy")
+def cities_page_fancy():
+    with db:
+        cur = db.cursor()
+        cur.execute("SELECT Name, CountryCode, Population FROM City ORDER BY Population LIMIT 15;")
+
+        query_results = cur.fetchall()
+    cities = []
+    for result in query_results:
+        cities.append(dict(name=result[0], country=result[1], population=result[2]))
+    return render_template('cities.html', cities=cities)
+
+@app.route('/input')
+def cities_input():
+  return render_template("input.html")
+
+@app.route('/output')
+def cities_output():
+  #pull 'ID' from input field and store it
+  city = request.args.get('ID')
+
+  with db:
+    cur = db.cursor()
+    #just select the city from the world_innodb that the user inputs
+    cur.execute("SELECT Name, CountryCode,  Population FROM City WHERE Name='%s';" % city)
+    query_results = cur.fetchall()
+
+  cities = []
+  for result in query_results:
+    cities.append(dict(name=result[0], country=result[1], population=result[2]))
+  the_result = ''
+  return render_template("output.html", cities = cities, the_result = the_result)
