@@ -6,7 +6,7 @@ import datetime as datetime
 from nltk.stem.porter import *
 import random as rand
 
-stoptime=datetime.datetime.combine(datetime.date(2015,2,1),datetime.time(0,0,0))
+stoptime=datetime.datetime.combine(datetime.date(2015,1,10),datetime.time(0,0,0))
 stemmer = PorterStemmer()
 
 rand.seed(2468)
@@ -28,7 +28,7 @@ num_ct_features=16
 
 #there is too much data. take 1k repos for now.
 num_accept=1000
-num_jan=999268 #num repos in january
+num_jan=392899 #for first 10 days. 999268 num repos in all january
 repo_accept=[]
 repo_reject=[]
 

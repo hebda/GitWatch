@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import datetime
-stoptime=datetime.datetime.combine(datetime.date(2015,2,1),datetime.time(0,0,0))
+stoptime=datetime.datetime.combine(datetime.date(2015,1,11),datetime.time(0,0,0))
 
 repoids={}
 
