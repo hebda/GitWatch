@@ -1,7 +1,7 @@
 #!/bin/bash
 
 year=2015
-maxindex=8
+maxindex=7
 month=(01 02 03 04 05 06 07 08 09)
 maxday=(31 28 31 30 31 30 31 31 12)
 
