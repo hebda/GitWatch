@@ -7,8 +7,11 @@ of the algorithm that assigns that probability.
 ### Step 1
 
 Scrape data from the [GitHub Archive](githubarchive.org). This process is very slow.
+* Create mySQL tables in the GitWatch database with:
+** CREATE TABLE repo (id INT UNSIGNED, name TINYTEXT, owner TINYTEXT, private BOOL, created_at DATETIME, description TEXT, language TINYTEXT, watchers MEDIUMINT UNSIGNED);
+** CREATE TABLE event (id INT UNSIGNED, type TINYINT UNSIGNED, timestamp DATETIME);
 * runExtractor.sh downloads the json that contains all the events for a given hour.
-* extractor.py processes the json and records the relevant information in text.csv and events.csv.
+* extractor.py processes the json and records the relevant information in the GitWatch mySQL db.
 
 ### Step 2
 
