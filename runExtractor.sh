@@ -1,11 +1,12 @@
 #!/bin/bash
 
 year=2015
-maxindex=7
+minindex=0 #january
+maxindex=7 #august
 month=(01 02 03 04 05 06 07 08 09)
 maxday=(31 28 31 30 31 30 31 31 12)
 
-for i in `seq 0 $maxindex`
+for i in `seq $minindex $maxindex`
 do
     for j in `seq 1 ${maxday[$i]}`
     do
