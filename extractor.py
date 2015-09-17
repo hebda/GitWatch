@@ -2,7 +2,7 @@
 
 import json
 import sys
-import pymysql as mdb
+#import pymysql as mdb
 #db = mdb.connect(user="hebda", host="localhost", db="GitWatch", charset='utf8')
 
 type_dict = {
