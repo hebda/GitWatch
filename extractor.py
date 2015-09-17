@@ -2,9 +2,8 @@
 
 import json
 import sys
-
-textinfo = open('text.csv','a')
-eventinfo = open('events.csv','a')
+import pymysql as mdb
+#db = mdb.connect(user="hebda", host="localhost", db="GitWatch", charset='utf8')
 
 type_dict = {
     'PushEvent':0,
@@ -24,67 +23,77 @@ type_dict = {
     'WatchEvent':14
 }
 
-with open(sys.argv[1]) as f:
-    for line in f:
-        data=(json.loads(line))
-        datatype=data['type']
+#line info: repoid, event, time, message, other
 
-        if datatype=='PushEvent':
-            for i in range(len(data['payload']['commits'])):
-                out_line="%d,%d,%d,%s,%s\n" % (type_dict[datatype],
-                                                  data['repo']['id'],
-                                                  data['actor']['id'],
-                                                  data['created_at'],
-                                                  data['payload']['commits'][i]['message'].replace('\n',' '))
-                textinfo.write(out_line.encode('utf-8'))
+with open('events.csv','a') as output:
+#with db:
+    #cur = db.cursor()
+    #cur.execute("SELECT Name, CountryCode, Population FROM City ORDER BY Population LIMIT 15;")
 
-        elif datatype=='CommitCommentEvent' or datatype=='IssueCommentEvent' or datatype=='PullRequestReviewCommentEvent':
-            # not using not using data['payload']['action'] in issues
-            out_line="%d,%d,%d,%s,%s\n" % (type_dict[datatype],
-                                           data['repo']['id'],
-                                           data['actor']['id'],
-                                           data['created_at'],
-                                           data['payload']['comment']['body'].replace('\n',' '))
-            textinfo.write(out_line.encode('utf-8'))
+    with open(sys.argv[1]) as f:
+        for line in f:
+            data=(json.loads(line))
+            datatype=data['type']
 
-        elif datatype=='IssuesEvent':
-            # not using not using data['payload']['action'] in issues
-            out_line="%d,%d,%d,%s,%s\n" % (type_dict[datatype],
-                                           data['repo']['id'],
-                                           data['actor']['id'],
-                                           data['created_at'],
-                                           data['payload']['issue']['title'].replace('\n',' '))
-            textinfo.write(out_line.encode('utf-8'))
+            repoid=data['repo']['id']
+            eventid=-1
+            timestamp=data['created_at'].replace('Z','').replace('T',' ')
+            message=''
+            other=0
 
-        elif datatype=='CreateEvent' or datatype=='DeleteEvent':
-            out_line="%d,%d,%d,%s,%s\n" % (type_dict[datatype],
-                                         data['repo']['id'],
-                                         data['actor']['id'],
-                                         data['created_at'],
-                                         data['payload']['ref_type'])
-            eventinfo.write(out_line.encode('utf-8'))
-        elif datatype=='MemberEvent' or datatype=='MembershipEvent' or datatype=='PullRequestEvent' or datatype=='WatchEvent':
-            out_line="%d,%d,%d,%s,%s\n" % (type_dict[datatype],
-                                         data['repo']['id'],
-                                         data['actor']['id'],
-                                         data['created_at'],
-                                         data['payload']['action'])
-            eventinfo.write(out_line.encode('utf-8'))
-        elif datatype=='PublicEvent' or datatype=='ReleaseEvent' or datatype=='TeamAddEvent':
-            out_line="%d,%d,%d,%s,%s\n" % (type_dict[datatype],
-                                         data['repo']['id'],
-                                         data['actor']['id'],
-                                         data['created_at'],
-                                         "NA")
-            eventinfo.write(out_line.encode('utf-8'))
-        elif datatype=='StatusEvent':
-            out_line="%d,%d,%d,%s,%s\n" % (type_dict[datatype],
-                                         data['repo']['id'],
-                                         data['actor']['id'],
-                                         data['created_at'],
-                                         data['state'])
-            eventinfo.write(out_line.encode('utf-8'))
+            if datatype=='PushEvent':
+                eventid=0
+                numCommits=0
+                for i in range(len(data['payload']['commits'])):
+                    numCommits+=1
+                    message+="%s " % data['payload']['commits'][i]['message'].replace('\n',' ')
+                message=message[:-1]
+                other=numCommits
+                if other==0:
+                    continue
+
+            elif datatype=='CommitCommentEvent':
+                eventid=1
+                message=data['payload']['comment']['body'].replace('\n',' ')
+            elif datatype=='IssueCommentEvent': # not using not using data['payload']['action'] in issues
+                eventid=2
+                message=data['payload']['comment']['body'].replace('\n',' ')
+            elif datatype=='IssuesEvent': # not using not using data['payload']['action'] in issues
+                eventid=3
+                message=data['payload']['issue']['title'].replace('\n',' ')
+            elif datatype=='PullRequestReviewCommentEvent':
+                eventid=4
+                message=data['payload']['comment']['body'].replace('\n',' ')
+            elif datatype=='CreateEvent':
+                if data['payload']['ref_type']=='branch':
+                    eventid=5
+                elif data['payload']['ref_type']=='tag':
+                    eventid=6
+            elif datatype=='DeleteEvent':
+                if data['payload']['ref_type']=='branch':
+                    eventid=7
+                elif data['payload']['ref_type']=='tag':
+                    eventid=8
+            elif datatype=='MemberEvent':
+                eventid=9
+            elif datatype=='PublicEvent':
+                eventid=10
+            elif datatype=='PullRequestEvent':
+                if data['payload']['action']=='opened':
+                    eventid=11
+                elif data['payload']['action']=='closed':
+                    eventid=12
+                elif data['payload']['action']=='reopened':
+                    eventid=13
+            elif datatype=='ReleaseEvent':
+                eventid=14
+            elif datatype=='WatchEvent':
+                eventid=15
+
+            if eventid<0:
+                continue
+
+            outline="%s,%s,%s,%s,%d\n" % (repoid,eventid,timestamp,message,other)
+            output.write(outline.encode('utf-8'))
 
 
-textinfo.close()
-eventinfo.close()
