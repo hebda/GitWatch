@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Starter Template for Bootstrap</title>
+    <title>GitWatch - Results</title>
 
     <!-- Bootstrap core CSS -->
    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
@@ -39,7 +39,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Project name</a>
+          <a class="navbar-brand" href="#">GitWatch</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
@@ -63,11 +63,11 @@
 
       <form  action="/output" method="GET">
         <div class="form-group">
-          <label for="ID">City  Name:</label>
-          <input type="text" id="ID" name='ID' placeholder="e.g. ">
+          <label for="ID">owner/name:</label>
+          <input type="text" id="ID" name='ID' placeholder="tobami/littlechef">
         </div>
         <div>
-          <button type="submit" class="btn btn-default btn-lg">Find this city!</button>
+          <button type="submit" class="btn btn-default btn-lg">Find this repository!</button>
         </div>
       </form>
     </div>
@@ -79,30 +79,28 @@
     <div class="container">
       <div class="starter-template">
         <h3>Results:</h3>
-        <p class="lead">Below is the result of your query.<br> You just took user input and looked up the information. Now we need to expand the functionality!</p>
+        <p class="lead">Below is the result of your query.<br>Behind the scenes, the input was put through an impressive algorithm.</p>
       </div>
 
       <table class="table table-hover">
-      <tr><th>Name</th><th>Country</th><th>Population</th></tr>
-      {% for city in cities %}
-      <tr><td>{{ city['name'] }}</td><td>{{ city['country']}}</td><td> {{ city['population'] }}</td></tr>
-      {% endfor %}
+      <tr><th># PR June</th><th># PR July</th><th># PR August</th><th># PR September, predicted</th></tr>
+      <tr><td>{{ nums['june'] }}</td><td>{{ nums['july']}}</td><td> {{ nums['august'] }}</td><td> {{ nums['august'] }}</td></tr>
       </table>
 
 
      </div><!-- /.container -->
 
-    <div class="container">
-      <div class="starter-template">
-        <h3>Another Result:</h3>
-        <p class="lead">Now we've taken the input and called a function from your package.<br>The result is {{the_result}}</p>
-      </div>
-
-      <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-      <script src="static/js/bootstrap.min.js"></script>
-
-
-     </div><!-- /.container -->
+    <!--<div class="container">
+    <!--  <div class="starter-template">
+    <!--    <h3>Another Result:</h3>
+    <!--    <p class="lead">Now we've taken the input and called a function from your package.<br>The result is {{the_result}}</p>
+    <!--  </div>
+    <!--
+    <!--  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <!--  <script src="static/js/bootstrap.min.js"></script>
+    <!--
+    <!--
+    <!-- </div><!-- /.container -->
 
 
     <!-- Bootstrap core JavaScript
