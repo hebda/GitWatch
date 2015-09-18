@@ -8,10 +8,12 @@ of the algorithm that assigns that probability.
 
 Scrape data from the [GitHub Archive](githubarchive.org). This process is very slow.
 * Create mySQL tables in the GitWatch database with:
-** CREATE TABLE repo (id INT UNSIGNED, name TINYTEXT, owner TINYTEXT, private BOOL, created_at DATETIME, description TEXT, language TINYTEXT, watchers MEDIUMINT UNSIGNED);
+** CREATE TABLE repo (id INT UNSIGNED, name TINYTEXT, private BOOL, created_at DATETIME, description TEXT, language TINYTEXT, watchers MEDIUMINT UNSIGNED);
 ** CREATE TABLE event (id INT UNSIGNED, type TINYINT UNSIGNED, timestamp DATETIME);
 * runExtractor.sh downloads the json that contains all the events for a given hour.
-* extractor.py processes the json and records the relevant information in the GitWatch mySQL db.
+** extractor.py processes the json and records the relevant information in the GitWatch mySQL db.
+** extractor_csv.py outputs to file rather than SQL for running remotely. The results are moved to SQL locally with csv_to_sql.py.
+* populateDB.py  populates the rest of the database info in SQL using GitHub API. The limit is 5k requests / hour.
 
 ### Step 2
 
