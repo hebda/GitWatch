@@ -20,9 +20,8 @@ with db:
         for i in f_in:
 
             if ctr<skip_lines:
-                continue
-            else:
                 ctr+=1
+                continue
 
             repoid=int(i.split(',')[0])
             events=int(i.split(',')[1].replace('\n',''))
