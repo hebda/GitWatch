@@ -10,6 +10,7 @@ Scrape data from the [GitHub Archive](githubarchive.org). This process is very s
 * Create mySQL tables in the GitWatch database with:
 ** CREATE TABLE repo (id INT UNSIGNED, name TINYTEXT, private BOOL, created_at DATETIME, description TEXT, language TINYTEXT, watchers MEDIUMINT UNSIGNED);
 ** CREATE TABLE event (id INT UNSIGNED, type TINYINT UNSIGNED, timestamp DATETIME);
+** CREATE INDEX id_index ON event (id); #This will improve performance a lot!
 * runExtractor.sh downloads the json that contains all the events for a given hour.
 ** extractor.py processes the json and records the relevant information in the GitWatch mySQL db.
 ** extractor_csv.py outputs to file rather than SQL for running remotely. The results are moved to SQL locally with csv_to_{repo,event}_sql.py. Use sort <filename> | uniq -u to reduce the size of the repo.csv file!
