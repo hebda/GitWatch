@@ -107,26 +107,26 @@ def output_list():
         result_list[i][2]=result_list[i][2].replace('?','')
 
     monthly_results=[]
-    for i in result_list:
-        repoid=i[0]
-        cur.execute("SELECT CASE WHEN timestamp BETWEEN '2015-06-01' AND '2015-06-30' THEN 'june' WHEN timestamp BETWEEN '2015-07-01' AND '2015-07-31' THEN 'july' WHEN timestamp BETWEEN '2015-08-01' AND '2015-08-31' THEN 'august' WHEN timestamp BETWEEN '2015-09-01' AND '2015-09-30' 'september ELSE 'october' END AS month, count(type) AS num_events FROM event WHERE type=17 and id=%d GROUP BY month;" % repoid)
-
-        hist_push = {}
-        for result in cur.fetchall():
-            hist_push[result[0]]=result[1]
-        hist_push['pred']=i[5]
-
-        cur.execute("SELECT CASE WHEN timestamp BETWEEN '2015-06-01' AND '2015-06-30' THEN 'june' WHEN timestamp BETWEEN '2015-07-01' AND '2015-07-31' THEN 'july' WHEN timestamp BETWEEN '2015-08-01' AND '2015-08-31' THEN 'august' WHEN timestamp BETWEEN '2015-09-01' AND '2015-09-30' 'september ELSE 'october' END AS month, count(type) AS num_events FROM event WHERE type=19 and id=%d GROUP BY month;" % repoid)
-        hist_watch={}
-        for result in cur.fetchall():
-            hist_watch[result[0]]=result[1]
-        hist_watch['pred']=i[6]
-
-        for month in ['june','july','august','september','october']:
-            if month not in hist_push:
-                hist_push[i]=0
-            if month not in hist_watch:
-                hist_watch[i]=0
+    #for i in result_list:
+    #    repoid=i[0]
+    #    cur.execute("SELECT CASE WHEN timestamp BETWEEN '2015-06-01' AND '2015-06-30' THEN 'june' WHEN timestamp BETWEEN '2015-07-01' AND '2015-07-31' THEN 'july' WHEN timestamp BETWEEN '2015-08-01' AND '2015-08-31' THEN 'august' WHEN timestamp BETWEEN '2015-09-01' AND '2015-09-30' 'september ELSE 'october' END AS month, count(type) AS num_events FROM event WHERE type=17 and id=%d GROUP BY month;" % repoid)
+    #
+    #    hist_push = {}
+    #    for result in cur.fetchall():
+    #        hist_push[result[0]]=result[1]
+    #    hist_push['pred']=i[5]
+    #
+    #    cur.execute("SELECT CASE WHEN timestamp BETWEEN '2015-06-01' AND '2015-06-30' THEN 'june' WHEN timestamp BETWEEN '2015-07-01' AND '2015-07-31' THEN 'july' WHEN timestamp BETWEEN '2015-08-01' AND '2015-08-31' THEN 'august' WHEN timestamp BETWEEN '2015-09-01' AND '2015-09-30' 'september ELSE 'october' END AS month, count(type) AS num_events FROM event WHERE type=19 and id=%d GROUP BY month;" % repoid)
+    #    hist_watch={}
+    #    for result in cur.fetchall():
+    #        hist_watch[result[0]]=result[1]
+    #    hist_watch['pred']=i[6]
+    #
+    #    for month in ['june','july','august','september','october']:
+    #        if month not in hist_push:
+    #            hist_push[i]=0
+    #        if month not in hist_watch:
+    #            hist_watch[i]=0
 
   #call a function from a_Model package. note we are only pulling one result in the query
   #pop_input = cities[0]['population']
