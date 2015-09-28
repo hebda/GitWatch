@@ -2,3 +2,8 @@
 *.txt
 *~
 *.pyc
+*pkl
+*npy
+old*
+.ipynb_checkpoints/*
+training/.ipynb_checkpoints/*
