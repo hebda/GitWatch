@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>GitWatch: Revealing where to contribute to open source projects</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="static/css/bootstrap.min.css" type="text/css">
+
+    <!-- Custom Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="static/font-awesome/css/font-awesome.min.css" type="text/css">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="static/css/animate.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="static/css/creative.css" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-64586950-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+    
+<body id="page-top">
+
+    <nav id="mainNav" class="navbar navbar-default navbar-withheader navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand page-scroll" href="/">GitWatch</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="page-scroll" href="/slides">Slides</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="https://github.com/hebda">GitHub</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="https://www.linkedin.com/in/philiphebda">LinkedIn</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+
+        <div class="header-content">
+            <div class="header-content-inner">
+                <h1>GitWatch</h1>
+                <hr>
+                <p><font color="blue">Revealing where to contribute to open source projects</font></p>
+                <a href="index_again" class="btn btn-primary btn-xl page-scroll">Where could I contribute?</a>
+		<a href="#select_one" class="btn btn-primary btn-xl page-scroll">I have a repository in mind.</a>
+	    </div>
+        </div>
+
+
+    <section class="bg-primary" id="select_one">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <h2 class="section-heading">Select a repository by name</h2>
+                    <hr class="light">
+		    {% if month %}
+                    <p class="text-faded">Enter the repository name to see the prediction for {{ month }}.</p>
+		    {% else %}
+                    <p class="text-faded">Enter the repository name to see the prediction for August.</p>
+		    {% endif %}
+                      <form action="/output" method="GET">
+                        <div class="form-group">
+                          <label for="Name1">Repository (owner/name):</label>
+                          {% if Name1 %}
+                            <input type="text" id="Name1" name='Name1' value="{{ Name1 }}" style="width:420px; color:#333" list="name_list">
+                          {% else %}
+                            <input type="text" id="Name1" name='Name1' placeholder="e.g. scikit-learn/scikit-learn" style="width:420px; color:#333" list="name_list">
+                          {% endif %}
+                          <datalist id="name_list">
+                          {% for repo_name in name_list %}
+                            <option>{{ repo_name }}</option>
+                          {% endfor %}
+                          </datalist>
+                          <br>
+                        </div>
+                        <div>
+                          <button type="submit" class="btn btn-default btn-xl">Make prediction</button>
+                        </div>
+                      </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% if display_one_result %}
+    <section id="list_result">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 text-center">
+        <h3>Results:</h3>
+        <p class="lead">Below is the result of your query.<br>Behind the scenes, the input was put through an impressive algorithm.</p>
+      </div>
+
+      <table class="table table-hover">
+      <tr><th>Name</th><th>Description</th><th>Language</th><th># Pushes Pred.</th><th># New Watchers Pred.</th><th>Hotness</th></tr>
+      {% for i in the_result %}
+      <tr><td>{{ i[1] }}</td><td>{{ i[2] }}</td><td>{{ i[3] }}</td><td>{{ i[5] }}</td><td>{{ i[6] }}</td><td>{{ i[7] }}</td></tr>
+      {% endfor %}
+      </table>
+     </div>
+     </div>
+    </section>
+    {% endif %}
+
+    {% if bar_plot_message_1_s %}
+    <section id="bar_plot">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Prediction</h2>
+                    <hr class="primary">
+                </div>
+            </div>
+            <p>Prediction for the year 2017:</p>
+            <ul class="ul-body">
+                <li class="li-body">{{ bar_plot_message_1_s }}</li>
+                <li class="li-body">{{ bar_plot_message_2_s }}</li>
+            </ul>
+            <div>
+                <center><img src="/bar_plot?ID1={{ ID1 }}&ID2={{ ID2 }}&{{ feature_list_s }}&score1={{ score1 }}&score2={{ score2 }}"></center>
+            </div>
+        </div>
+    </section>
+
+    <section id="select_statistic">
+        <aside class="bg-dark">
+            <div class="container text-center">
+                <div class="call-to-action">
+                    <h2>See trends over time</h2>
+                    <hr class="light">
+                    <p>Select the statistic that you would like to view over time.</p>
+                    <form action="/output#time_series" method="GET">
+                        <div class="form-group">
+                            <label class="control-label" for="selectbasic">Statistic:</label>
+                            <select id="Feature" name="Feature" class="input-xlarge dropdown">
+                                {% for dropdown_s in dropdown_s_l %}
+                                    {% if dropdown_s == default_dropdown_s %}
+                                        <option selected="selected">{{ dropdown_s }}</option>
+                                    {% else %}
+                                        <option>{{ dropdown_s }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            <input type="hidden" id="Name1" name="Name1" value="{{ Name1 }}">
+                            <input type="hidden" id="Name2" name="Name2" value="{{ Name2 }}">
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-default btn-xl">Show time trace</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </aside>
+    </section>
+    {% endif %}
+
+    {% if feature_s %}
+    <section id="time_series">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Time trace</h2>
+                    <hr class="primary">
+                </div>
+            </div>
+            <p>{{ output_message_s }}</p>
+            <div>
+                <center><img src="/plot?ID1={{ schools1_past[0]['school_id'] }}&ID2={{ schools2_past[0]['school_id'] }}&Feature={{ feature_s }}"></center>
+            </div>
+
+        </div><!-- /.container -->
+    </section>
+    {% endif %}
+
+    <section id="notes">
+        <p><center><i>
+            <font color="#999999" size="xsmall">
+                Website by Philip Hebda (phil[at]gitwatch.xyz), 2015.
+                <br>
+            </font>
+            <font color="#ffffff" size="xsmall">
+                Long Island City
+                <br>
+                Queens Vocational
+            </font>
+        </i></center></p>
+    </section>
+
+    <!-- jQuery -->
+    <script src="static/js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="static/js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="static/js/jquery.easing.min.js"></script>
+    <script src="static/js/jquery.fittext.js"></script>
+    <script src="static/js/wow.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="static/js/creative.js"></script>
+
+</body>
+
+</html>
