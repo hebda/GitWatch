@@ -26,15 +26,15 @@ with db:
             repoid=int(i.split(',')[0])
             events=int(i.split(',')[1].replace('\n',''))
 
-            with open('data/training_set.csv','a') as f_out:
+            with open('data/application_set.csv','a') as f_out:
 
                 print "Processing repoid %d (%d events)" % (repoid,events)
-                cur.execute('SELECT type,timestamp FROM event WHERE id=%d and timestamp<"2015-09-01"' % repoid)
+                cur.execute('SELECT type,timestamp FROM event WHERE id=%d and timestamp<"2015-10-01" and timestamp>"2015-06-30"' % repoid)
                 event_info=np.zeros(60,int)
 
                 for j in cur.fetchall():
 
-                    index=j[0]+20*(j[1].month-6)
+                    index=j[0]+20*(j[1].month-7)
                     if index < 0 or index>=60:
                         continue
 
