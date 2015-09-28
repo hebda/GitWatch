@@ -83,8 +83,10 @@
       </div>
 
       <table class="table table-hover">
-      <tr><th># PR June</th><th># PR July</th><th># PR August</th><th># PR September, predicted</th><th># PR September, observed</th></tr>
-      <tr><td>{{ nums['june'] }}</td><td>{{ nums['july']}}</td><td> {{ nums['august'] }}</td><td> {{ nums['august']/2 }}</td><td> {{ nums['september'] }}</td></tr>
+      <tr><th>Name</th><th>Description</th><th>Language</th><th># Pushes Pred.</th><th># New Watchers Pred.</th><th>Hotness</th></tr>
+      {% for i in the_result %}
+      <tr><td>{{ i[1] }}</td><td>{{ i[2] }}</td><td>{{ i[3] }}</td><td>{{ i[5] }}</td><td>{{ i[6] }}</td><td>{{ i[7] }}</td></tr>
+      {% endfor %}
       </table>
 
 
