@@ -54,7 +54,7 @@ def output_list():
       if request.args.get(i)==i:
           language_list.append(i)
 
-  display_num=2
+  display_num=10
 
   db = mdb.connect(user="hebda", host="localhost", db="GitWatch", charset='utf8')
   with db:
@@ -141,6 +141,7 @@ def output_list():
 
 
         fig = plt.figure()
+        fig.set_size_inches((7,5))
         fig.patch.set_alpha(0.5)
         ax = fig.add_subplot(111)
         ax.patch.set_alpha(0.5)
@@ -151,6 +152,7 @@ def output_list():
         fig.savefig(fname_push)
 
         fig = plt.figure()
+        fig.set_size_inches((7,5))
         fig.patch.set_alpha(0.5)
         ax = fig.add_subplot(111)
         ax.patch.set_alpha(0.5)
