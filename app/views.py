@@ -1,7 +1,11 @@
 from flask import render_template, request
 from app import app
 import pymysql as mdb
+import matplotlib.pyplot as plt
+import math
 #from a_Model import ModelIt
+
+month='September'
 
 #the top languages from repo
 languages=[
@@ -31,7 +35,7 @@ languages=[
 @app.route('/input')
 def git_input():
 
-    return render_template("index.html", month="September", languages=languages)
+    return render_template("index.html", month=month, languages=languages)
 
 @app.route('/output_one')
 def output_one():
@@ -79,60 +83,94 @@ def input_one():
 def output_list():
   #pull 'name' from input field and store it
   description_tag = request.args.get('description_tag')
+  hipsterness = request.args.get('hipsterness')
   hotness = request.args.get('hotness')
   language_list=[]
   for i in languages:
       if request.args.get(i)==i:
           language_list.append(i)
 
+  display_num=10
 
   db = mdb.connect(user="hebda", host="localhost", db="GitWatch", charset='utf8')
   with db:
     cur = db.cursor()
 
     where_clause="WHERE status=1 AND pred1 IS NOT NULL"
-    if hotness=='hotness':
-        where_clause+=" AND hot=1"
+    if hipsterness=='hipsterness':
+        where_clause+=" AND hipster=1"
     if len(language_list)>0:
         where_clause+=" AND (language=\"%s\"" % language_list[0]
         for i in language_list[1:]:
             where_clause+=" OR language=\"%s\"" % i
         where_clause+=")"
 
-    cur.execute("SELECT id,name,description,language,watchers,pred1,pred2,hot FROM repo %s ORDER BY pred1 DESC LIMIT 10;" % where_clause )
+    cur.execute("SELECT id,name,description,language,watchers,pred1,pred2,hipster FROM repo %s ORDER BY pred1 DESC;" % where_clause )
 
     result_list=list(cur.fetchall())
+    watchers_list=[]
     for i in range(len(result_list)):
         result_list[i]=list(result_list[i])
+        result_list[i][1]=result_list[i][1][result_list[i][1].find('/')+1:]
         result_list[i][2]=result_list[i][2].replace('?','')
+        watchers_list.append(result_list[i][4])
+
+    watchers_list=sorted(watchers_list)
+    hotness_definition=watchers_list[int(math.floor(len(watchers_list)*0.9))]
+
+
+    for i in range(len(result_list)):
+        if result_list[i][4]>=hotness_definition:
+            result_list[i].append(1)
+        else:
+            result_list[i].append(0)
+
+    if hotness=='hotness':
+        tmp_list=[]
+        for i in range(len(result_list)):
+            if result_list[i][8]:
+                tmp_list.append(result_list[i])
+                if len(tmp_list)==display_num:
+                    break
+        result_list=tmp_list
+    else:
+        result_list=result_list[:display_num]
+
 
     monthly_results=[]
-    #for i in result_list:
-    #    repoid=i[0]
-    #    cur.execute("SELECT CASE WHEN timestamp BETWEEN '2015-06-01' AND '2015-06-30' THEN 'june' WHEN timestamp BETWEEN '2015-07-01' AND '2015-07-31' THEN 'july' WHEN timestamp BETWEEN '2015-08-01' AND '2015-08-31' THEN 'august' WHEN timestamp BETWEEN '2015-09-01' AND '2015-09-30' 'september ELSE 'october' END AS month, count(type) AS num_events FROM event WHERE type=17 and id=%d GROUP BY month;" % repoid)
-    #
-    #    hist_push = {}
-    #    for result in cur.fetchall():
-    #        hist_push[result[0]]=result[1]
-    #    hist_push['pred']=i[5]
-    #
-    #    cur.execute("SELECT CASE WHEN timestamp BETWEEN '2015-06-01' AND '2015-06-30' THEN 'june' WHEN timestamp BETWEEN '2015-07-01' AND '2015-07-31' THEN 'july' WHEN timestamp BETWEEN '2015-08-01' AND '2015-08-31' THEN 'august' WHEN timestamp BETWEEN '2015-09-01' AND '2015-09-30' 'september ELSE 'october' END AS month, count(type) AS num_events FROM event WHERE type=19 and id=%d GROUP BY month;" % repoid)
-    #    hist_watch={}
-    #    for result in cur.fetchall():
-    #        hist_watch[result[0]]=result[1]
-    #    hist_watch['pred']=i[6]
-    #
-    #    for month in ['june','july','august','september','october']:
-    #        if month not in hist_push:
-    #            hist_push[i]=0
-    #        if month not in hist_watch:
-    #            hist_watch[i]=0
+    for i in result_list:
+        repoid=i[0]
+        cur.execute("SELECT CASE WHEN timestamp BETWEEN '2015-06-01' AND '2015-07-01' THEN 'june' WHEN timestamp BETWEEN '2015-07-01' AND '2015-08-01' THEN 'july' WHEN timestamp BETWEEN '2015-08-01' AND '2015-09-01' THEN 'august' WHEN timestamp BETWEEN '2015-09-01' AND '2015-10-01' THEN 'september' ELSE 'october' END AS month, count(type) AS num_events FROM event WHERE type=17 and id=%d GROUP BY month;" % repoid)
+    
+        hist_push = {}
+        for result in cur.fetchall():
+            hist_push[result[0]]=result[1]
+        hist_push['pred']=i[5]
+    
+        cur.execute("SELECT CASE WHEN timestamp BETWEEN '2015-06-01' AND '2015-07-01' THEN 'june' WHEN timestamp BETWEEN '2015-07-01' AND '2015-08-01' THEN 'july' WHEN timestamp BETWEEN '2015-08-01' AND '2015-09-01' THEN 'august' WHEN timestamp BETWEEN '2015-09-01' AND '2015-10-01' THEN 'september' ELSE 'october' END AS month, count(type) AS num_events FROM event WHERE type=19 and id=%d GROUP BY month;" % repoid)
+        hist_watch={}
+        for result in cur.fetchall():
+            hist_watch[result[0]]=result[1]
+        hist_watch['pred']=i[6]
+    
+        for month in ['june','july','august','september','october']:
+            if month not in hist_push:
+                hist_push[month]=0
+            if month not in hist_watch:
+                hist_watch[month]=0
+    
+        plt.bar(range(len(hist_push)),hist_push.values(),align='center')
+        plt.xticks(range(len(hist_push)),hist_push.keys())
+        plt.savefig('app/plots/%d.png' % i[0])
+
+        break
+
 
   #call a function from a_Model package. note we are only pulling one result in the query
   #pop_input = cities[0]['population']
   #the_result = ModelIt(city, pop_input)
   the_result=0
-  return render_template("index.html", the_result = result_list, display_list_result=1, languages=languages, language_checklist=language_list, hotness=hotness)
+  return render_template("index.html", month=month, the_result = result_list, display_list_result=1, languages=languages, language_checklist=language_list, hotness=hotness, hipsterness=hipsterness)
 
 @app.route('/slides')
 def slides():
