@@ -3,6 +3,8 @@ from app import app
 import pymysql as mdb
 import matplotlib.pyplot as plt
 import math
+import os
+import collections
 #from a_Model import ModelIt
 
 month='September'
@@ -30,53 +32,15 @@ languages=[
 'TeX',
 'VimL']
 
+font = {'family' : 'sans-serif', 'weight' : 'bold', 'size'   : 22}
+plt.rc('font', **font)
+
 @app.route('/')
 @app.route('/index')
 @app.route('/input')
 def git_input():
 
     return render_template("index.html", month=month, languages=languages)
-
-@app.route('/output_one')
-def output_one():
-
-    Name1 = request.args.get('Name1')
-    if not Name1:
-        Name1 = 'scikit-learn/scikit-learn'
-
-    db = mdb.connect(host='localhost',user='hebda',db='joined',charset='utf8')
-    with db:
-        cur = db.cursor()
-        cur.execute("SELECT * FROM repo WHERE name=%s;" % Name1)
-
-
-    ## Check if inputs correspond to valid schools
-    schools1 = query_past_scores(None, name=Name1)
-    schools2 = query_past_scores(None, name=Name2)
-
-    if (not schools1) or (not schools2):
-        return render_template('error.html')
-        
-
-@app.route('/input_list')
-def input_list():
-    return render_template("index.html", month="September", languages=languages)
-
-@app.route('/index_again')
-def index_again():
-    return render_template("index.html#select_list", month="September", languages=languages)
-
-@app.route('/index_one')
-def input_one():
-
-    name_list=[]
-    db = mdb.connect(user="hebda", host="localhost", db="GitWatch", charset='utf8')
-    with db:
-        cur=db.cursor()
-        cur.execute("SELECT name FROM repo WHERE status=1")
-        name_list=sorted(list(set([i[0] for i in cur.fetchall()] )))
-
-    return render_template("index_one.html", name_list=name_list, month="September", languages=languages)
 
 @app.route('/output_list')
 @app.route('/output')
@@ -90,7 +54,7 @@ def output_list():
       if request.args.get(i)==i:
           language_list.append(i)
 
-  display_num=10
+  display_num=2
 
   db = mdb.connect(user="hebda", host="localhost", db="GitWatch", charset='utf8')
   with db:
@@ -111,8 +75,10 @@ def output_list():
     watchers_list=[]
     for i in range(len(result_list)):
         result_list[i]=list(result_list[i])
-        result_list[i][1]=result_list[i][1][result_list[i][1].find('/')+1:]
+        #result_list[i][1]=result_list[i][1][result_list[i][1].find('/')+1:]
         result_list[i][2]=result_list[i][2].replace('?','')
+        if len(result_list[i][2])>160:
+            result_list[i][2]=result_list[i][2][:160]+' ...'
         watchers_list.append(result_list[i][4])
 
     watchers_list=sorted(watchers_list)
@@ -140,36 +106,61 @@ def output_list():
     monthly_results=[]
     for i in result_list:
         repoid=i[0]
-        cur.execute("SELECT CASE WHEN timestamp BETWEEN '2015-06-01' AND '2015-07-01' THEN 'june' WHEN timestamp BETWEEN '2015-07-01' AND '2015-08-01' THEN 'july' WHEN timestamp BETWEEN '2015-08-01' AND '2015-09-01' THEN 'august' WHEN timestamp BETWEEN '2015-09-01' AND '2015-10-01' THEN 'september' ELSE 'october' END AS month, count(type) AS num_events FROM event WHERE type=17 and id=%d GROUP BY month;" % repoid)
+
+        fname_push='app/static/img/plots/%d_push.png' % repoid
+        fname_watch='app/static/img/plots/%d_watch.png' % repoid
+        if os.path.isfile(fname_push) and os.path.isfile(fname_watch):
+            continue
+
+        cur.execute("SELECT CASE WHEN timestamp BETWEEN '2015-06-01' AND '2015-07-01' THEN 'June' WHEN timestamp BETWEEN '2015-07-01' AND '2015-08-01' THEN 'July' WHEN timestamp BETWEEN '2015-08-01' AND '2015-09-01' THEN 'August' WHEN timestamp BETWEEN '2015-09-01' AND '2015-10-01' THEN 'September' ELSE 'October' END AS month, count(type) AS num_events FROM event WHERE type=17 and id=%d GROUP BY month;" % repoid)
     
         hist_push = {}
         for result in cur.fetchall():
             hist_push[result[0]]=result[1]
-        hist_push['pred']=i[5]
+        hist_push['Pred. Sep.']=i[5]
     
-        cur.execute("SELECT CASE WHEN timestamp BETWEEN '2015-06-01' AND '2015-07-01' THEN 'june' WHEN timestamp BETWEEN '2015-07-01' AND '2015-08-01' THEN 'july' WHEN timestamp BETWEEN '2015-08-01' AND '2015-09-01' THEN 'august' WHEN timestamp BETWEEN '2015-09-01' AND '2015-10-01' THEN 'september' ELSE 'october' END AS month, count(type) AS num_events FROM event WHERE type=19 and id=%d GROUP BY month;" % repoid)
+        cur.execute("SELECT CASE WHEN timestamp BETWEEN '2015-06-01' AND '2015-07-01' THEN 'June' WHEN timestamp BETWEEN '2015-07-01' AND '2015-08-01' THEN 'July' WHEN timestamp BETWEEN '2015-08-01' AND '2015-09-01' THEN 'August' WHEN timestamp BETWEEN '2015-09-01' AND '2015-10-01' THEN 'September' ELSE 'October' END AS month, count(type) AS num_events FROM event WHERE type=19 and id=%d GROUP BY month;" % repoid)
         hist_watch={}
         for result in cur.fetchall():
             hist_watch[result[0]]=result[1]
-        hist_watch['pred']=i[6]
+        hist_watch['Pred. Sep.']=i[6]
     
-        for month in ['june','july','august','september','october']:
-            if month not in hist_push:
-                hist_push[month]=0
-            if month not in hist_watch:
-                hist_watch[month]=0
-    
-        plt.bar(range(len(hist_push)),hist_push.values(),align='center')
-        plt.xticks(range(len(hist_push)),hist_push.keys())
-        plt.savefig('app/plots/%d.png' % i[0])
+        od_push=collections.OrderedDict()
+        od_watch=collections.OrderedDict()
+        for month_i in ['June','July','August','Pred. Sep.']:
+            if month_i not in hist_push:
+                hist_push[month_i]=0
+                od_push[month_i]=0
+            else:
+                od_push[month_i]=hist_push[month_i]
+            if month_i not in hist_watch:
+                hist_watch[month_i]=0
+                od_watch[month_i]=0
+            else:
+                od_watch[month_i]=hist_watch[month_i]
 
-        break
+
+        fig = plt.figure()
+        fig.patch.set_alpha(0.5)
+        ax = fig.add_subplot(111)
+        ax.patch.set_alpha(0.5)
+
+        ax.bar(range(len(od_push)),od_push.values(),align='center',color='#4589C7',alpha=0.5)
+        plt.xticks(range(len(od_push)),od_push.keys())
+        plt.title('Pushes for %s' % i[1][i[1].find('/')+1:] )
+        fig.savefig(fname_push)
+
+        fig = plt.figure()
+        fig.patch.set_alpha(0.5)
+        ax = fig.add_subplot(111)
+        ax.patch.set_alpha(0.5)
+
+        ax.bar(range(len(od_watch)),od_watch.values(),align='center',color='#4589C7',alpha=0.5)
+        plt.xticks(range(len(od_watch)),od_watch.keys())
+        plt.title('Watches for %s' % i[1][i[1].find('/')+1:] )
+        fig.savefig(fname_watch)
 
 
-  #call a function from a_Model package. note we are only pulling one result in the query
-  #pop_input = cities[0]['population']
-  #the_result = ModelIt(city, pop_input)
-  the_result=0
   return render_template("index.html", month=month, the_result = result_list, display_list_result=1, languages=languages, language_checklist=language_list, hotness=hotness, hipsterness=hipsterness)
 
 @app.route('/slides')
