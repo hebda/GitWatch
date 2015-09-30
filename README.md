@@ -26,13 +26,18 @@ Process the data and store in SQL
 ### Step 3
 
 Training
+This was done with the iPython notebook in the training directory.
+The 
 
 ### Step 4
 
-Populate training to db?
-think about how to deal with arbitrary inputs
+Populate training to db. First create three new columns in the repo table.
+* process_training.py creates a table of dimension n(repos) x 60 onto which training can be applied.
+* populateDB_withpred.py fills in the values
 
 ### Step 5
 
 Run the webapp
 * run.py will run the web app on the local machine
+
+## Check out gitwatch.xyz to see it run!
