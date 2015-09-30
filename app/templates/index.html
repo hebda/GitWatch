@@ -210,86 +210,11 @@
     </section>
     {% endif %}
 
-    {% if bar_plot_message_1_s %}
-    <section id="bar_plot">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">Prediction</h2>
-                    <hr class="primary">
-                </div>
-            </div>
-            <p>Prediction for the year 2017:</p>
-            <ul class="ul-body">
-                <li class="li-body">{{ bar_plot_message_1_s }}</li>
-                <li class="li-body">{{ bar_plot_message_2_s }}</li>
-            </ul>
-            <div>
-                <center><img src="/bar_plot?ID1={{ ID1 }}&ID2={{ ID2 }}&{{ feature_list_s }}&score1={{ score1 }}&score2={{ score2 }}"></center>
-            </div>
-        </div>
-    </section>
-
-    <section id="select_statistic">
-        <aside class="bg-dark">
-            <div class="container text-center">
-                <div class="call-to-action">
-                    <h2>See trends over time</h2>
-                    <hr class="light">
-                    <p>Select the statistic that you would like to view over time.</p>
-                    <form action="/output#time_series" method="GET">
-                        <div class="form-group">
-                            <label class="control-label" for="selectbasic">Statistic:</label>
-                            <select id="Feature" name="Feature" class="input-xlarge dropdown">
-                                {% for dropdown_s in dropdown_s_l %}
-                                    {% if dropdown_s == default_dropdown_s %}
-                                        <option selected="selected">{{ dropdown_s }}</option>
-                                    {% else %}
-                                        <option>{{ dropdown_s }}</option>
-                                    {% endif %}
-                                {% endfor %}
-                            </select>
-                            <input type="hidden" id="Name1" name="Name1" value="{{ Name1 }}">
-                            <input type="hidden" id="Name2" name="Name2" value="{{ Name2 }}">
-                        </div>
-                        <div>
-                            <button type="submit" class="btn btn-default btn-xl">Show time trace</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </aside>
-    </section>
-    {% endif %}
-
-    {% if feature_s %}
-    <section id="time_series">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">Time trace</h2>
-                    <hr class="primary">
-                </div>
-            </div>
-            <p>{{ output_message_s }}</p>
-            <div>
-                <center><img src="/plot?ID1={{ schools1_past[0]['school_id'] }}&ID2={{ schools2_past[0]['school_id'] }}&Feature={{ feature_s }}"></center>
-            </div>
-
-        </div><!-- /.container -->
-    </section>
-    {% endif %}
-
     <section id="notes">
         <p><center><i>
             <font color="#999999" size="xsmall">
                 Website by Philip Hebda (phil[at]gitwatch.xyz), 2015.
                 <br>
-            </font>
-            <font color="#ffffff" size="xsmall">
-                Long Island City
-                <br>
-                Queens Vocational
             </font>
         </i></center></p>
     </section>
