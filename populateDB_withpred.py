@@ -15,7 +15,10 @@ from sklearn.externals import joblib
 sns.set(style="white")
 
 # Read a dataset
-d=pd.read_csv('data/application_set.csv',header=None,index_col=False)
+d=pd.read_csv('data/application_set_october.csv',header=None,index_col=False)
+
+#in case of crash, skip these lines
+skip_lines=0
 
 #d.iloc[:,range(40)+[58]]
 d.columns = ['id']+range(60)
@@ -51,20 +54,21 @@ with db:
     res_watchers = clf2.predict(d.ix[:,range(40)])
     res_watchers[res_watchers<0]=0
 
-    for i in range(d.shape[0]):
+    for i in range(d.shape[0])[skip_lines:]:
         
         repoid=d.index[i]
         print repoid
+        break
         pred1=int(round(res_pushes[i]))
         pred2=int(round(res_watchers[i]))
-        hot=(res_watchers[i]>d.ix[repoid,39]*2+10)
+        hipster=(res_watchers[i]>d.ix[repoid,39]*2+10)
         status=0
         if event_req[repoid]:
             status=1
         else:
             status=2
 
-        cur.execute('UPDATE repo SET status=%d,pred1=%d,pred2=%d,hot=%d WHERE id=%d' % (status,pred1,pred2,hot,repoid) )
+        cur.execute('UPDATE repo SET status=%d,pred1=%d,pred2=%d,hipster=%d WHERE id=%d' % (status,pred1,pred2,hipster,repoid) )
 
     cur.close()
 db.close()    
