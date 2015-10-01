@@ -117,17 +117,17 @@ def output_list():
         hist_push = {}
         for result in cur.fetchall():
             hist_push[result[0]]=result[1]
-        hist_push['Pred. Sep.']=i[5]
+        hist_push['Pred. Oct.']=i[5]
     
         cur.execute("SELECT CASE WHEN timestamp BETWEEN '2015-06-01' AND '2015-07-01' THEN 'June' WHEN timestamp BETWEEN '2015-07-01' AND '2015-08-01' THEN 'July' WHEN timestamp BETWEEN '2015-08-01' AND '2015-09-01' THEN 'August' WHEN timestamp BETWEEN '2015-09-01' AND '2015-10-01' THEN 'September' ELSE 'October' END AS month, count(type) AS num_events FROM event WHERE type=19 and id=%d GROUP BY month;" % repoid)
         hist_watch={}
         for result in cur.fetchall():
             hist_watch[result[0]]=result[1]
-        hist_watch['Pred. Sep.']=i[6]
+        hist_watch['Pred. Oct.']=i[6]
     
         od_push=collections.OrderedDict()
         od_watch=collections.OrderedDict()
-        for month_i in ['June','July','August','Pred. Sep.']:
+        for month_i in ['June','July','August','September','Pred. Oct.']:
             if month_i not in hist_push:
                 hist_push[month_i]=0
                 od_push[month_i]=0
