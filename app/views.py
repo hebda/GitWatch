@@ -7,7 +7,7 @@ import os
 import collections
 #from a_Model import ModelIt
 
-month='September'
+month='October'
 
 #the top languages from repo
 languages=[
