@@ -79,14 +79,14 @@ def output_list():
         result_list[i][2]=result_list[i][2].replace('?','')
         if len(result_list[i][2])>160:
             result_list[i][2]=result_list[i][2][:160]+' ...'
-        watchers_list.append(result_list[i][4])
+        watchers_list.append(result_list[i][6])
 
     watchers_list=sorted(watchers_list)
     hotness_definition=watchers_list[int(math.floor(len(watchers_list)*0.9))]
 
 
     for i in range(len(result_list)):
-        if result_list[i][4]>=hotness_definition:
+        if result_list[i][6]>=hotness_definition:
             result_list[i].append(1)
         else:
             result_list[i].append(0)
