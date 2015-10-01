@@ -54,7 +54,7 @@ def output_list():
       if request.args.get(i)==i:
           language_list.append(i)
 
-  display_num=2
+  display_num=10
 
   db = mdb.connect(user="hebda", host="localhost", db="GitWatch", charset='utf8')
   with db:
