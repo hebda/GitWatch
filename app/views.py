@@ -54,7 +54,7 @@ def output_list():
       if request.args.get(i)==i:
           language_list.append(i)
 
-  display_num=10
+  display_num=2
 
   db = mdb.connect(user="hebda", host="localhost", db="GitWatch", charset='utf8')
   with db:
@@ -146,10 +146,11 @@ def output_list():
         ax = fig.add_subplot(111)
         ax.patch.set_alpha(0.5)
 
+        fig.subplots_adjust(bottom=0.15)
         ax.bar(range(len(od_push)),od_push.values(),align='center',color='#4589C7',alpha=0.5)
-        #plt.xticks(range(len(od_push)),od_push.keys())
-        ax.set_xticklabels( od_push.keys(), rotation=45 ) ;
-        plt.title('Pushes for %s' % i[1][i[1].find('/')+1:] )
+        ax.set_xticks( range(len(od_push)) )
+        ax.set_xticklabels( od_push.keys(), rotation=20 ) ;
+        plt.title('Pushes for %s' % i[1][i[1].find('/')+1:].replace('_','\_') )
         fig.savefig(fname_push)
 
         fig = plt.figure()
@@ -158,9 +159,10 @@ def output_list():
         ax = fig.add_subplot(111)
         ax.patch.set_alpha(0.5)
 
+        fig.subplots_adjust(bottom=0.15)
         ax.bar(range(len(od_watch)),od_watch.values(),align='center',color='#4589C7',alpha=0.5)
-        #plt.xticks(range(len(od_watch)),od_watch.keys())
-        ax.set_xticklabels( od_watch.keys(), rotation=45 ) ;
+        ax.set_xticks( range(len(od_watch)) )
+        ax.set_xticklabels( od_watch.keys(), rotation=20 ) ;
         plt.title('Watches for %s' % i[1][i[1].find('/')+1:] )
         fig.savefig(fname_watch)
 
