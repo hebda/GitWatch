@@ -147,7 +147,8 @@ def output_list():
         ax.patch.set_alpha(0.5)
 
         ax.bar(range(len(od_push)),od_push.values(),align='center',color='#4589C7',alpha=0.5)
-        plt.xticks(range(len(od_push)),od_push.keys())
+        #plt.xticks(range(len(od_push)),od_push.keys())
+        ax.set_xticklabels( od_push.keys(), rotation=45 ) ;
         plt.title('Pushes for %s' % i[1][i[1].find('/')+1:] )
         fig.savefig(fname_push)
 
@@ -158,7 +159,8 @@ def output_list():
         ax.patch.set_alpha(0.5)
 
         ax.bar(range(len(od_watch)),od_watch.values(),align='center',color='#4589C7',alpha=0.5)
-        plt.xticks(range(len(od_watch)),od_watch.keys())
+        #plt.xticks(range(len(od_watch)),od_watch.keys())
+        ax.set_xticklabels( od_watch.keys(), rotation=45 ) ;
         plt.title('Watches for %s' % i[1][i[1].find('/')+1:] )
         fig.savefig(fname_watch)
 
