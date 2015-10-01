@@ -58,7 +58,6 @@ with db:
         
         repoid=d.index[i]
         print repoid
-        break
         pred1=int(round(res_pushes[i]))
         pred2=int(round(res_watchers[i]))
         hipster=(res_watchers[i]>d.ix[repoid,39]*2+10)
