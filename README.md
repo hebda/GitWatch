@@ -31,6 +31,7 @@ This was done with the iPython notebook in the training directory.
 Populate training to db. First create three new columns in the repo table.
 * process_training.py creates a table of dimension n(repos) x 60 onto which training can be applied.
 * populateDB_withpred.py fills in the values
+* maskrepos.py will impose quality constraints on june,july when applying on October
 
 ### Step 5
 
