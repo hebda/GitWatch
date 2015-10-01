@@ -35,17 +35,16 @@ with db:
     tot2=d.ix[:,20:40].sum(1)
     tot3=d.ix[:,40:60].sum(1)
     event_req = ((d.ix[:,range(40)]>0).sum(1)>7) & (d.ix[:,[13,14,15,33,34,35]].sum(1)>=2)
-    event_req = ((d.ix[:,20:59]>0).sum(1)>7) & (d.ix[:,[33,34,35,53,54,55]].sum(1)>=2)
-    event_req = (tot1>=100) & (tot2>=100)
+    event_req = ((d.ix[:,20:60]>0).sum(1)>7) & (d.ix[:,[33,34,35,53,54,55]].sum(1)>=2)
+    event_req = event_req & (tot1>=100) & (tot2>=100)
 
     for i in range(d.shape[0])[skip_lines:]:
         
         repoid=d.index[i]
-        #print repoid
+        print repoid
         status=3
         if not event_req[repoid]:
-            print repoid
-            #cur.execute('UPDATE repo SET status=%d WHERE id=%d' % (status,repoid) )
+            cur.execute('UPDATE repo SET status=%d WHERE id=%d' % (status,repoid) )
 
     cur.close()
 db.close()    
