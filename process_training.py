@@ -6,7 +6,7 @@ import numpy as np
 
 skip_lines=0
 
-start_month=6 #Use Aug, Sep to predict Oct
+start_month=8 #Use Aug, Sep to predict Oct
 
 db = mdb.connect(user="hebda", host="localhost", db="GitWatch", charset='utf8', autocommit=True)
 
