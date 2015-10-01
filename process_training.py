@@ -6,6 +6,8 @@ import numpy as np
 
 skip_lines=0
 
+start_month=8 #Use Aug, Sep to predict Oct
+
 db = mdb.connect(user="hebda", host="localhost", db="GitWatch", charset='utf8', autocommit=True)
 
 with db:
@@ -34,7 +36,7 @@ with db:
 
                 for j in cur.fetchall():
 
-                    index=j[0]+20*(j[1].month-7)
+                    index=j[0]+20*(j[1].month-start_month)
                     if index < 0 or index>=60:
                         continue
 
