@@ -6,7 +6,7 @@ import numpy as np
 
 skip_lines=0
 
-start_month=8 #Use Aug, Sep to predict Oct
+start_month=6 #Use Aug, Sep to predict Oct
 
 db = mdb.connect(user="hebda", host="localhost", db="GitWatch", charset='utf8', autocommit=True)
 
@@ -31,7 +31,7 @@ with db:
             with open('data/application_set.csv','a') as f_out:
 
                 print "Processing repoid %d (%d events)" % (repoid,events)
-                cur.execute('SELECT type,timestamp FROM event WHERE id=%d and timestamp<"2015-10-01" and timestamp>"2015-06-30"' % repoid)
+                cur.execute('SELECT type,timestamp FROM event WHERE id=%d and timestamp<"2015-10-01" and timestamp>"2015-06-01"' % repoid)
                 event_info=np.zeros(60,int)
 
                 for j in cur.fetchall():
