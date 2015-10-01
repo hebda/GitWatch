@@ -18,16 +18,13 @@ Scrape data from the [GitHub Archive](githubarchive.org). This process is very s
 
 ### Step 2
 
-Process the data and store in SQL
-* makeDict.py looks at the first two weeks of data and outputs the 2000 most frequent words. Note that I went through the list by hand and removed the nonsense ones, e.g. single letters, 'fffffff', words in French and German
-* repoCount.py counts the number of repos present in some time interval. This is needed in order to limit the training and testing set. Otherwise it will be too big.
-* processData.py puts it all together. The output is a csv file for training, testing, and validation. The file combines event info and tf-vector.
+Process the data
+* process_training.py queries sql and creates a csv file for training or applying stuff done in step 3
 
 ### Step 3
 
 Training
 This was done with the iPython notebook in the training directory.
-The 
 
 ### Step 4
 
