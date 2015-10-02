@@ -1,4 +1,4 @@
-!/usr/bin/env python
+#!/usr/bin/env python
 
 import json
 import os, sys
@@ -20,7 +20,7 @@ d_aug=pd.read_csv('data/application_set_september.csv',header=None,index_col=Fal
 
 d_sep.columns = ['id']+range(60)
 d_sep.index = d_sep['id']
-d_sep=d_aug.drop('id',1)
+d_sep=d_sep.drop('id',1)
 d_aug.columns = ['id']+range(60)
 d_aug.index = d_aug['id']
 d_aug=d_aug.drop('id',1)
@@ -35,11 +35,11 @@ clf2 = joblib.load('training/gradientboostedregression_watches.pkl')
 tot1_sep=d_sep.ix[:,0:20].sum(1)
 tot2_sep=d_sep.ix[:,20:40].sum(1)
 tot3_sep=d_sep.ix[:,40:60].sum(1)
-event_req_sep = ((d_sep.ix[:,range(40)]>0).sum(1)>7) & (d_sep.ix[:,[13,14,15,33,34,35]].sum(1)>=2) & tot1_sep>=100 & tot2_sep>=100
+event_req_sep = ((d_sep.ix[:,range(40)]>0).sum(1)>7) & (d_sep.ix[:,[13,14,15,33,34,35]].sum(1)>=2) & (tot1_sep>=100) & (tot2_sep>=100)
 tot1_aug=d_aug.ix[:,0:20].sum(1)
 tot2_aug=d_aug.ix[:,20:40].sum(1)
 tot3_aug=d_aug.ix[:,40:60].sum(1)
-event_req_aug = ((d_aug.ix[:,range(40)]>0).sum(1)>7) & (d_aug.ix[:,[13,14,15,33,34,35]].sum(1)>=2) & tot1_aug>=100 & tot2_aug>=100
+event_req_aug = ((d_aug.ix[:,range(40)]>0).sum(1)>7) & (d_aug.ix[:,[13,14,15,33,34,35]].sum(1)>=2) & (tot1_aug>=100) & (tot2_aug>=100)
 
 event_req = event_req_aug & event_req_sep
 
