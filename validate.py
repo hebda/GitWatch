@@ -56,10 +56,11 @@ f_out = open('validation_output.txt','w')
 
 for i in range(d_sep.shape[0]):
         
+    repoid=d.index[i]
+
     if not event_req[repoid]:
         continue
 
-    repoid=d.index[i]
     pred1=int(round(res_pushes[i]))
     pred2=int(round(res_watchers[i]))
     hipster=(res_watchers[i]>d_sep.ix[repoid,39]*2+10)
