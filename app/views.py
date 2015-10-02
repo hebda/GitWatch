@@ -60,7 +60,7 @@ def output_list():
   with db:
     cur = db.cursor()
 
-    where_clause="WHERE status=1 AND pred1 IS NOT NULL"
+    where_clause="WHERE status=1 AND pred1 IS NOT NULL and language!=\"\""
     if hipsterness=='hipsterness':
         where_clause+=" AND hipster=1"
     if len(language_list)>0:
