@@ -16,7 +16,7 @@ sns.set(style="white")
 
 # Read a dataset
 d_sep=pd.read_csv('data/application_set_september.csv',header=None,index_col=False)
-d_aug=pd.read_csv('data/application_set_september.csv',header=None,index_col=False)
+d_aug=pd.read_csv('data/application_set_august.csv',header=None,index_col=False)
 
 d_sep.columns = ['id']+range(60)
 d_sep.index = d_sep['id']
