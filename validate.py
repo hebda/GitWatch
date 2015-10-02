@@ -53,6 +53,7 @@ res_watchers = clf2.predict(d_sep.ix[:,range(40)])
 res_watchers[res_watchers<0]=0
 
 f_out = open('validation_output.txt','w')
+f_out.write("repoid,pred1,true1,pred2,true2,hip,hip_true")
 
 for i in range(d_sep.shape[0]):
         
