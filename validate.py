@@ -56,7 +56,7 @@ f_out = open('validation_output.txt','w')
 
 for i in range(d_sep.shape[0]):
         
-    repoid=d.index[i]
+    repoid=d_sep.index[i]
 
     if not event_req[repoid]:
         continue
