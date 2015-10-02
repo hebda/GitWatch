@@ -101,7 +101,7 @@
                     <h2 class="section-heading">What open source projects could I contribute to in September?</h2>
 		    {% endif %}
                     <hr class="light">
-                    <p class="text-faded">Enter some options to get a personalized list.</p><br>
+                    <p class="text-faded">Enter some options to get a personalized list of repositories.</p><br>
                       <form action="/output#list_result" method="GET">
                         <div class="form-group">
 			  {% for lang in languages %}
@@ -118,11 +118,11 @@
 			  <br><br>
 			  {% if hotness %}
 			  <label for="hotness" onclick="selectAll(document.wizard_form, this);">
-			    <input type="checkbox" id="hotness" name="hotness" value="hotness" checked> Only repos that will be popular <img src="../static/img/fire.png" alt="Yes" style="width:24px;height:24px;">
+			    <input type="checkbox" id="hotness" name="hotness" value="hotness" checked> Only repositories that will be popular <img src="../static/img/fire.png" alt="Yes" style="width:24px;height:24px;">
 			  </label>
 			  {% else %}
 			  <label for="hotness" onclick="selectAll(document.wizard_form, this);">
-			    <input type="checkbox" id="hotness" name="hotness" value="hotness"> Only repos that will be popular <img src="../static/img/fire.png" alt="Yes" style="width:24px;height:24px;">
+			    <input type="checkbox" id="hotness" name="hotness" value="hotness"> Only repositories that will be popular <img src="../static/img/fire.png" alt="Yes" style="width:24px;height:24px;">
 			  </label>
 			  {% endif %}
                           <br><br>
@@ -159,10 +159,10 @@
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 text-center">
           <h3>Results for {{ month }}</h3><br>
-        <!-- <p class="lead">Below is the result of your query.<br>Behind the scenes, the input was put through an impressive algorithm.</p> -->
+          <p class="lead">Hover on the predictions for more insight.</p>
       </div>
       <table class="table table-hover"><col align="left">
-      <tr><th>owner/name</th><th>Description</th><th>Lang</th><th># Pushes Pred</th><th># New Watchers Pred</th><th>Notes</th></tr>
+      <tr><th>owner/name</th><th>Description</th><th>Lang</th><th># Pushes Pred.</th><th># New Watchers Pred.</th><th>Notes</th></tr>
       {% for i in the_result %}
 	<tr><td><a href="https://github.com/{{i[1]}}">{{ i[1] }}</a></td><td>{{ i[2] }}</td><td>{{ i[3] }}</td>
 	  <td align="center">
