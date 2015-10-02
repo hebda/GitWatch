@@ -69,6 +69,6 @@ for i in range(d_sep.shape[0]):
     true2=d_sep.ix[repoid,59]
     hipster_true=(true2>d_sep.ix[repoid,39]*2+10)
 
-    f_out.write("%d %d %d %d %d %d %d" % (repoid, pred1, true1, pred2, true2, hipster, hipster_true) )
+    f_out.write("%d,%d,%d,%d,%d,%d,%d\n" % (repoid, pred1, true1, pred2, true2, hipster, hipster_true) )
 
 f_out.close()
