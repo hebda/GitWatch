@@ -40,7 +40,7 @@ plt.rc('font', **font)
 @app.route('/input')
 def git_input():
 
-    return render_template("index.html", month=month, languages=languages)
+    return render_template("index.html", month=month, languages=languages, hotness=1)
 
 @app.route('/output_list')
 @app.route('/output')
