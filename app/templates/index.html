@@ -122,11 +122,11 @@
 			  </label>
 			  {% else %}
 			  <label for="hotness" onclick="selectAll(document.wizard_form, this);">
-			    <input type="checkbox" id="hotness" name="hotness" value="hotness"> Only popular repos <img src="../static/img/fire.png" alt="Yes" style="width:24px;height:24px;">
+			    <input type="checkbox" id="hotness" name="hotness" value="hotness"> Only repos that will be popular <img src="../static/img/fire.png" alt="Yes" style="width:24px;height:24px;">
 			  </label>
 			  {% endif %}
                           <br><br>
-			  {% if hipsterness %}
+			  <!--{% if hipsterness %}
 			  <label for="hipsterness" onclick="selectAll(document.wizard_form, this);">
 			    <input type="checkbox" id="hipsterness" name="hipsterness" value="hipsterness" checked> Only repos that will explode in popularity <img src="../static/img/mustache.png" alt="Yes" style="width:36px;height:24px;">
 			  </label>
@@ -135,7 +135,7 @@
 			    <input type="checkbox" id="hipsterness" name="hipsterness" value="hipsterness"> Only repos that will explode in popularity <img src="../static/img/mustache.png" alt="Yes" style="width:36px;height:24px;">
 			  </label>
 			  {% endif %}
-                          <br><br>
+                          <br><br>-->
                           <!--<label for="Label2"><b>Search project descriptions:</b></label>
                           {% if description_tag %}
                             <input type="text" id="description_tag" name='description_tag' value="{{ description_tag }}" style="width:420px; color:#333" list="name_list">
@@ -175,7 +175,12 @@
 	    {{ i[6] }}
 	    <div class="play"><img src="../static/img/plots/{{i[0]}}_watch.png" style="width=50px;height=50px;" align="right"> </div>
 	  </div></td>
-	  {% if i[7]==1 and i[8]==1 %}
+          {% if i[8]==1 %}
+          <td><img src="../static/img/fire.png" alt="Yes" style="width:24px;height:24px;"></td></tr>
+          {% else %}
+          <td></td></tr>
+          {% endif %}
+	  <!--{% if i[7]==1 and i[8]==1 %}
 	  <td><img src="../static/img/mustacheglasses.png" alt="Yes" style="width:36px;height:24px;"></td></tr>
 	  {% elif i[7]==1 %}
 	  <td><img src="../static/img/mustache.png" alt="Yes" style="width:36px;height:24px;"></td></tr>
@@ -183,14 +188,14 @@
           <td><img src="../static/img/fire.png" alt="Yes" style="width:24px;height:24px;"></td></tr>
           {% else %}
           <td></td></tr>
-      {% endif %}
+          {% endif %}-->
       {% endfor %}
       </table>
      </div>
       <br><br>
         <img src="../static/img/fire.png" alt="Yes" style="width:24px;height:24px;" hspace="20"> In the top 10% of total number of watchers in the queried set<br><br>
-	<img src="../static/img/mustache.png" alt="Yes" style="width:36px;height:24px;" hspace="13"> Predicted to at least double the number of new watchers from the previous month<br><br>
-	<img src="../static/img/mustacheglasses.png" alt="Yes" style="width:36px;height:24px;" hspace="13"> Both conditions hold<br>
+	<!--<img src="../static/img/mustache.png" alt="Yes" style="width:36px;height:24px;" hspace="13"> Predicted to at least double the number of new watchers from the previous month<br><br>
+	<img src="../static/img/mustacheglasses.png" alt="Yes" style="width:36px;height:24px;" hspace="13"> Both conditions hold<br>-->
 
      </div>
       <!--<center>
