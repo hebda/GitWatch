@@ -159,10 +159,10 @@
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 text-center">
           <h3>Results for {{ month }}</h3><br>
-          <p class="lead">Hover on the predictions for more insight.</p>
+          <p class="lead">Hover over the predictions for more insight.</p>
       </div>
       <table class="table table-hover"><col align="left">
-      <tr><th>owner/name</th><th>Description</th><th>Lang</th><th># Pushes Pred.</th><th># New Watchers Pred.</th><th>Notes</th></tr>
+      <tr><th>owner/name</th><th>Description</th><th>Lang</th><th># Pushes Pred.</th><th># Watches Pred.</th><th>Notes</th></tr>
       {% for i in the_result %}
 	<tr><td><a href="https://github.com/{{i[1]}}">{{ i[1] }}</a></td><td>{{ i[2] }}</td><td>{{ i[3] }}</td>
 	  <td align="center">
@@ -193,7 +193,7 @@
       </table>
      </div>
       <br><br>
-        <img src="../static/img/fire.png" alt="Yes" style="width:24px;height:24px;" hspace="20"> In the top 10% of total number of watchers in the queried set<br><br>
+        <img src="../static/img/fire.png" alt="Yes" style="width:24px;height:24px;" hspace="20"> In the top 10% of predicted watches for repos in the queried set<br><br>
 	<!--<img src="../static/img/mustache.png" alt="Yes" style="width:36px;height:24px;" hspace="13"> Predicted to at least double the number of new watchers from the previous month<br><br>
 	<img src="../static/img/mustacheglasses.png" alt="Yes" style="width:36px;height:24px;" hspace="13"> Both conditions hold<br>-->
 
