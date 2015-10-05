@@ -62,7 +62,7 @@ def output_list():
 
   display_num=10
 
-  db = mdb.connect(user="hebda", host="localhost", db="GitWatch", charset='utf8')
+  db = mdb.connect(user="root", host="localhost", db="GitWatch", charset='utf8')
   with db:
     cur = db.cursor()
 
