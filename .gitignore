@@ -7,4 +7,4 @@
 old*
 .ipynb_checkpoints/*
 training/.ipynb_checkpoints/*
-.pid
+*.pid
