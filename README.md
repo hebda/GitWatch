@@ -14,7 +14,7 @@ Scrape data from the [GitHub Archive](githubarchive.org). This process is very s
   * `CREATE INDEX id_index ON event (id);` (This will improve lookup performance a lot!)
 * `runExtractor.sh` downloads the json that contains all the events for a given hour.
   * `extractor.py` processes the json and records the relevant information in the GitWatch mySQL db.
-  * `extractor_csv.py` outputs to file rather than SQL for running remotely. The results are moved to SQL locally with csv_to_{repo,event}_sql.py. Use sort <filename> | uniq -u to reduce the size of the repo.csv file!
+  * `extractor_csv.py` outputs to file rather than SQL for running remotely. The results are moved to SQL locally with csv_to_{repo,event}_sql.py. Use `sort <filename> | uniq -u` to reduce the size of the `repo.csv` file!
 * `populateDB.py` populates the rest of the database info in SQL using GitHub API. The limit is 5k requests / hour with authentication.
 
 ### Step 2
