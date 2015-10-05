@@ -25,7 +25,7 @@ Process the data
 ### Step 3
 
 Training
-This was done with the iPython notebook in the training directory. Check it out!
+This was done with the iPython notebook in the directory `training`. Check it out!
 
 ### Step 4
 
